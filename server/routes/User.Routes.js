@@ -2,18 +2,12 @@ import express from 'express';
 import userNormalizer from '../negocio/userNormalizer.js';
 import multer from 'multer';
 import storage from '../config/multerConfig.js';
-import jwt from 'jsonwebtoken'
 import transporter from "../config/nodeMailer.js";
 
 const router = express.Router();
 
-const PRIVATE_KEY = 'SECRETO'
 const upload = multer({ storage })
 
-const generarToken = (user) => {
-    const token = jwt.sign({data: user}, PRIVATE_KEY, {expiresIn: '24h'})
-    return token
-  }
 router.get('/api/user', (req, res) => {
     res.send('aca va a estar listado el usuario');
 })
