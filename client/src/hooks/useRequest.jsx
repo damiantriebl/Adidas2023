@@ -20,6 +20,6 @@ const useRequest = ({ url, method, body, onSuccess, headers = '' }) => {
     }
 
   };
-  return { doSend, errors };
+  return { doSend, errors }; 
 };
 export default useRequest;
