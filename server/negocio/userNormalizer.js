@@ -20,7 +20,6 @@ class userNormalizer {
         direccion: obj.direccion,
         telefono: obj.telefono,
         nombre: obj.nombre,
-        avatar: obj.avatar,
         isAdmin: obj.isAdmin ?? true,
         fechaAlta: Date.now(),
       };

@@ -8,7 +8,7 @@ const useRequest = ({ url, method, body, onSuccess, headers = '' }) => {
   const dispatch = useDispatch();
   const doSend = async (props = {}) => {
     setErrors(null);
-    const formatUrl = `https://backend-production-e99b.up.railway.app/${url}`;
+    const formatUrl = `https://backend-production-e99b.up.railway.app${url}`;
     try {
       const response = await axios[method](formatUrl, { ...props, ...body })
       if (response) {

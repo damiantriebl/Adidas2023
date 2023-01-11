@@ -19,7 +19,7 @@ router.get('/api/logout',  async (req, res, next) => {
 })
 
 router.post('/api/signup',upload.single("file"), async (req, res, next) => {
-    const data = {...req.body, avatar: req.file.filename}
+    const data = {...req.body}
     const res2 = await new userNormalizer().guardarUsuario(data);  
     const respuesta = res2.data;
     const html= `<ul>
