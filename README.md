@@ -20,7 +20,7 @@ Como se puede ver estan todos los endpoint necesarios que se pidieron en el proy
 #### '/api/carro/:id' => Get. Da la lista del carro segun el id
 #### '/api/carro/:id/'=> post agrega elemento al carro de un usuario
 #### '/api/carro/:id' => put. Edita un carro
-#### '/api/carro/:id' => patch. elemina un producto de un carro
+#### '/api/carro/:id' => delete. elemina un producto de un carro
 
 ## Ordenes: 
 #### "/api/ordenes/:id" => Get. recibe las ordenes de un usuario esepcifico
@@ -29,6 +29,6 @@ Como se puede ver estan todos los endpoint necesarios que se pidieron en el proy
 ## Users
 #### '/api/logout' => Get.  Deloguea el usuario
 #### '/api/signup' => Post. Da de alta un usuario
-
+#### '/api/login' => Post. logea al usuario
 ## Email
 #### '/api/email' => Get. testeo de el mail
