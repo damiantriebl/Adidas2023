@@ -13,7 +13,8 @@ Como se puede ver estan todos los endpoint necesarios que se pidieron en el proy
 ## Productos:
 #### "/api/productos" => Get. Da la lista de todos los productos 
 #### "/api/productos/:parametro" => Get. Este revisa por expresion regular si es un **id** o un **tipo** y te devuelve en relacion a eso 
-#### "/api/productos/:id" => put. edita o crea un producto 
+#### "/api/productos/" => post. crea un producto 
+#### "/api/productos/:id" => put. edita un producto 
 #### "/api/productos/:id" => delete. borra un producto 
 
 ## Carro: 
