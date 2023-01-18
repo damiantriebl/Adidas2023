@@ -7,8 +7,8 @@ let database;
 export const connect = () => {
     // Add your own uri below, here my dbname is UserDB
     // and we are using the local mongodb
-    const url = process.env.MONGO_URI;
-//    const url = "mongodb+srv://damian:05550Kayak@cluster1.mqi7dv8.mongodb.net/ecommerce"
+  // const url = process.env.MONGO_URI;
+    const url = "mongodb+srv://damian:05550Kayak@cluster1.mqi7dv8.mongodb.net/ecommerce"
   
     if (database) {
         return;

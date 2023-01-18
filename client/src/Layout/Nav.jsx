@@ -13,7 +13,7 @@ const Nav = ({ home }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [usuario, setUsuario] = useLocalStorage('user', null)
-  const administrador = useSelector((state) => state.administrador.value);
+  const administrador = useSelector((state) => state.administrador);
   const openDrawner = useSelector((state) => state.editor.openDrawner);
   const openDrawnerCarro = useSelector((state) => state.carro.openDrawnerCarro);
   const carrito = useSelector((state) => state.carro.carrito);
@@ -67,15 +67,15 @@ const Nav = ({ home }) => {
             >
               {!openDrawnerCarro ? <p>Ver Carro</p> : <p>Cerrar Carro</p>}
             </button>
-            {administrador?.isAdmin &&
-              <>
+            {console.log(administrador)}
+            {administrador?.isAdmin &&              
                 <button
                   className="text-white bg-gradient-to-r from-sky-600 to-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  focus:outline-none "
                   onClick={handleNew}
                 >
                   Ingresar Producto
                 </button>
-              </>}
+              }
                 <button
                   className=" text-white bg-gradient-to-r from-sky-600 to-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  focus:outline-none "
                   onClick={handleDesloguear}

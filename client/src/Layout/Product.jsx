@@ -21,7 +21,7 @@ const Product = ({id, producto, precio, thumbnail }) => {
       });
       const {doSend : doDelete, errors : errorDelete} = useRequest({
         url: `/api/carro/${administrador?.id}/` ,
-        method: "patch",
+        method: "delete",
         body: {idProducto: id},
         onSuccess: (obj) => {if(obj.ok) dispatch(deleteElementCart(id))}
       });

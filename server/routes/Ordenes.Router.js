@@ -9,7 +9,7 @@ router.get("/api/ordenes/:id", async (req, res) => {
     if (!ordenes?.error) {
         res.json({
         ok: true,
-        mensaje: "El Post se edito correctamente",
+        mensaje: "la orden se genero correctamente",
         ordenes,
         });
     } else {
@@ -34,7 +34,7 @@ router.post("/api/ordenes", async (req, res) => {
     const mail = await transporter.sendMail(data);
     res.json({
       ok: true,
-      mensaje: "El Post se edito correctamente",
+      mensaje: "la Orden se edito correctamente",
       id: ordenes,
     });
   } else {

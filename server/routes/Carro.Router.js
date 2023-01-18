@@ -20,11 +20,6 @@ router.get('/api/carro/:id', async (req, res) =>{
     }
 });
 
-router.get('/api/carro/:id', async (req, res)=> {
-    const idReq = req.params.id
-    const carritoId = await objCarrito.getById(idReq);
-    res.send(carritoId);
-})
 
 router.post('/api/carro/:id/', async (req, res) => {
     const productoCarro = await  new carroNormalizer().guardarcarro(req.params.id, req.body);
@@ -43,7 +38,7 @@ router.post('/api/carro/:id/', async (req, res) => {
     }
 })
 
-router.put('/api/carro/:id', async (req, res) => {
+ router.put('/api/carro/:id', async (req, res) => {
     const carritoCreado = await objCarrito.updateById(req.params.id, req.body);
     if (!carritoCreado?.error){
         res.json({
@@ -58,9 +53,9 @@ router.put('/api/carro/:id', async (req, res) => {
             error: carritoCreado?.error,
         })
     }
-})
+}) 
 
-router.patch('/api/carro/:id', async (req, res) => {
+router.delete('/api/carro/:id', async (req, res) => {
     const carritoCreado = await new carroNormalizer().deleteByUserAndObject(req.params.id, req.body.idProducto);
     if (!carritoCreado?.error){
         res.json({

@@ -117,7 +117,7 @@ io.on("connection", async (socket) => {
       await new comentariosNormalizer().cargarTodosLosComentarios();
     io.sockets.emit("comentarios", listaComentarios);
   });
-  const chat = await new chatNormalizer().cargarTodosLoschats();
+  const chat = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
   io.sockets.emit("chatMessage", chat);
 
   socket.on("recibir", async (data) => {
@@ -126,7 +126,7 @@ io.on("connection", async (socket) => {
       nombre: data.body.nombre,
       mensaje: data.body.mensaje,
     });
-    const chatNuevos = await new chatNormalizer().cargarTodosLoschats();
+    const chatNuevos = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
     io.sockets.emit("chatMessage", chatNuevos);
   });
 
@@ -134,9 +134,9 @@ io.on("connection", async (socket) => {
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
+app.listen(4000, () => {
   console.log("Se esta escuchando", PORT);
 });
-server.listen(process.env.WEBSOCKET_PORT, () => {
+server.listen(4001, () => {
   console.log(`server de websocket escuchando en el ${4001}`);
 });

@@ -21,6 +21,10 @@ router.get("/api/productos/:parametro", async (req, res) => {
   res.json(productos);
 });
 
+router.post("/api/productos", async (req, res) => {
+  const respuesta = await new productosNormalizer().guardarProducto(req.body);
+  res.json(respuesta);
+});
 router.put("/api/productos/:id", async (req, res) => {
   const productoCreado = await new productosNormalizer().editarPorId(
     req.params.id,
