@@ -5,8 +5,9 @@ La rama **Main** es especificamente para levantar Railway, ya que esta apunta to
 
 el proyecto consta de dos partes, el cliente y el servidor, el cliente es solo para poder obserbar las cosas hechas en el servidor, en railway como uso una arquitectura de capas simple el websocket no funciona (ya que apunta a otro puerto, para poder hacerlo en railway tendria q separar el proyecto en una capa adicional y exponer el puerto 4001)
 usando la rama **proyectofinal** anda el sistema de comentarios, y el sistema de chat (que no esta implementado la parte de acceder a los chat ya que seria como otro proyeycto, pero basicamente seria un front con todos los rooms disponibles y entrar uno por uno)
-
-#server
+# client
+Se levanta con vite, un simple **npm run dev** lo puede levantar sin problemas.
+# server
 
 Como se puede ver estan todos los endpoint necesarios que se pidieron en el proyecto final. 
 Productos:
