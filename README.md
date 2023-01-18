@@ -24,7 +24,7 @@ Como se puede ver estan todos los endpoint necesarios que se pidieron en el proy
 #### '/api/carro/:id' => delete. elemina un producto de un carro
 
 ## Ordenes: 
-#### "/api/ordenes/:id" => Get. recibe las ordenes de un usuario esepcifico
+#### "/api/ordenes/:id" => Get. recibe las ordenes de un usuario esepcifico // POR ALGUNA RAZON NO FUNCIONA EN RAILWAY PERO SI EN LOCAL
 #### "/api/ordenes" => post. crea una nueva orden
 
 ## Users
