@@ -1,5 +1,6 @@
 import express from "express";
 import productosNormalizer from "../negocio/productosNormalizer.js";
+import auth from '../middlewares/auth.js'
 const router = express.Router();
 
 router.get("/api/productos", async (req, res) => {
@@ -21,11 +22,11 @@ router.get("/api/productos/:parametro", async (req, res) => {
   res.json(productos);
 });
 
-router.post("/api/productos", async (req, res) => {
+router.post("/api/productos", auth,  async (req, res) => {
   const respuesta = await new productosNormalizer().guardarProducto(req.body);
   res.json(respuesta);
 });
-router.put("/api/productos/:id", async (req, res) => {
+router.put("/api/productos/:id",  auth, async (req, res) => {
   const productoCreado = await new productosNormalizer().editarPorId(
     req.params.id,
     req.body
@@ -33,7 +34,7 @@ router.put("/api/productos/:id", async (req, res) => {
   res.json(productoCreado);
 });
 
-router.delete("/api/productos/:id", async (req, res) => {
+router.delete("/api/productos/:id",  auth,  async (req, res) => {
   const productoBorrado = await objProducto.deleteById(req.params.id);
   if (!productoBorrado?.error) {
     res.json({

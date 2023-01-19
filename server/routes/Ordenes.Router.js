@@ -1,10 +1,11 @@
 import express from "express";
 import OrdenesNormalizer from "../negocio/OrdenesNormalizer.js";
 import transporter from "../config/nodeMailer.js";
+import auth from '../middlewares/auth.js'
 
 const router = express.Router();
 
-router.get("/api/ordenes/:id", async (req, res) => {
+router.get("/api/ordenes/:id",  async (req, res) => {
      const ordenes = await new OrdenesNormalizer().getAll(req.params.id);
     if (!ordenes?.error) {
         res.json({
@@ -20,7 +21,7 @@ router.get("/api/ordenes/:id", async (req, res) => {
         });
     } 
 });
-router.post("/api/ordenes", async (req, res) => {
+router.post("/api/ordenes", auth,  async (req, res) => {
     const ordenes = await new OrdenesNormalizer().guardarOrden(req.body);
    
   if (!ordenes?.error) {
