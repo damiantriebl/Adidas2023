@@ -3,13 +3,19 @@ import userNormalizer from '../negocio/userNormalizer.js';
 import multer from 'multer';
 import storage from '../config/multerConfig.js';
 import transporter from "../config/nodeMailer.js";
+import passport from 'passport'
+import auth from "../middlewares/auth.js"
 
 const router = express.Router();
 
 const upload = multer({ storage })
 
-router.get('/api/user', (req, res) => {
-    res.send('aca va a estar listado el usuario');
+const generarToken = (user) => {
+    const token = jwt.sign({data: user}, PRIVATE_KEY, {expiresIn: '24h'})
+    return token
+  }
+router.get('/api/user',  auth ,(req, res) => {
+    res.send(req.session);
 })
 
 router.get('/api/logout',  async (req, res, next) => {
@@ -38,6 +44,25 @@ router.post('/api/signup',upload.single("file"), async (req, res, next) => {
       const mail = await transporter.sendMail(email);
   
     res.json(res2)   
+})
+router.get('/api/variables', auth,  (req, res) => {
+  if(process.env.ENVIROMENT){
+    res.send({
+       MONGO_URI: process.env.MONGO_URI,
+       ENVIROMENT:process.env.ENVIROMENT,
+       PORT:process.env.PORT,
+       WEBSOCKET_PORT:process.env.WEBSOCKET_PORT,
+       MAIL_PASS:process.env.MAIL_PASS,
+       MAIL_USER:process.env.MAIL_USER,
+       MAIL_HOST:process.env.MAIL_HOST,
+       MAIL_PORT:process.env.MAIL_PORT,
+       PRIVATE_KEY:process.env.PRIVATE_KEY       
+     });
+   }else {
+    res.send({
+      mensaje:" no tiene ninguna variable de entorno, puede que este en modo debug"
+    })
+  }
 })
 
 export {router as UserRouter}

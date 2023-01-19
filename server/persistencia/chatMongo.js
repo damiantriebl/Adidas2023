@@ -33,9 +33,9 @@ class chatDaoMongo {
     }
   }
   
-  async getByMail(mail) {
+  async getByMail(email) {
     try {
-      let getByMailBd = await this.db.find({mail});
+      let getByMailBd = await this.db.find({"email": email});
       return { success: true, data: getByMailBd };;
     } catch (error) {
       return { success: false ,error: error.message };

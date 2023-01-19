@@ -28,5 +28,13 @@ class chatNormalizer {
           return {message: "no hay chats", success: false}
         }   
   }
+  async cargarChatPorEmail(email){
+    const chats =  await new chatDaoMongo().getByMail(email)
+    if(chats.data?.length > 0){
+        return chats.data      
+    }else {
+      return {message: "no hay chats", success: false}
+    }  
+  }
 }
 export default chatNormalizer;

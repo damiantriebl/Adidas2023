@@ -1,13 +1,10 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import useSocket from '../hooks/useSockect'
 import useLocalStorage from '../hooks/useLocalStorage'
-const chatTooltip = () => {
-    const [mensaje, setMensaje] = useState("")
-    const [chat, setChat] = useState()
+const chatTooltip = ({textos, isConnected}) => {
+    const [mensaje, setMensaje] = useState("");
     const [user, setUser] = useLocalStorage("user", "");
-    const { isConnected, received } = useSocket({
-        listen: 'chatMessage',
-    })
+   
     const { doRequest } = useSocket({
         room: 'recibir',
         body: {
@@ -16,16 +13,13 @@ const chatTooltip = () => {
           nombre: user.email
         },
       });
-     useEffect(() => {
-        if (isConnected && received.length > 0) {
-            setChat(received)
-        }
-    }, [received])
+   
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {          
             doRequest();
         }
       }
+   
     return (
         <div className='bg-slate-800 p-5 rounded mb-4	'>
             <div className="relative z-0 mb-6 w-full group">
@@ -46,12 +40,18 @@ const chatTooltip = () => {
                     Chat
                 </label>
             </div>
-            {chat?.[0].listaComentada?.length < 1 && <p className='text-gray-100'>No hay productos</p>}
-            { chat?.[0].listaComentada?.map((obj)=>{
-                return <>
-                            <p className='text-gray-100'>{obj.mensaje}</p>
-                            <p className='text-gray-400'>{obj.email}</p>
-                       </>
+    
+             {!isConnected && <div>El sistema de chat esta offline</div>}
+            
+            {textos && !textos[0][0]?.listaComentada?.length > 0 && <p className='text-gray-100'>No hay productos</p>  }
+            {textos && textos[0][0]?.listaComentada?.length > 0 && textos[0][0]?.listaComentada?.map((obj, idx)=>{
+                if(idx > (textos[0][0]?.listaComentada?.length - 7 )){
+                    return <>
+                                <p className='text-gray-100'>{obj.mensaje}</p>
+                                <p className='text-gray-400'>{obj.email}</p>
+                        </>
+
+                    }
             })} 
         </div>
     )

@@ -27,9 +27,11 @@ const Cart = () => {
             <h1 className="text-lg">Carro de compras</h1>
             {ordenes?.map((orden) => {
                 return (<div>
-                    <ul>
-                        <li>Fecha: {orden.dateOfJoining}</li>
-                        {orden.orden.map(valorOrden => <li>{valorOrden.producto}</li>)}
+                    <ul className='border-cyan-600 border-4 rounded-md m-8 p-4 w-auto'>
+                        <h1>Fecha: {orden.dateOfJoining}</h1>
+                        <div className='flex flex-row'>
+                            {orden.orden.map(valorOrden => <li><img className='w-40 h-40 m-10 ' src={valorOrden.thumbnail} title={valorOrden.producto} /></li>)}
+                        </div>
                     </ul>
                 </div>)
             })}

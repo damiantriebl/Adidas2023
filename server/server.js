@@ -17,10 +17,17 @@ import http from "http";
 import comentariosNormalizer from "./negocio/comentariosNormalizer.js";
 import { OrdenesRouter } from "./routes/Ordenes.Router.js";
 import chatNormalizer from "./negocio/chatNormalizer.js";
-
+import passportJwt from 'passport-jwt'
+import jwt from 'jsonwebtoken'
 dotenv.config();
 
 const LocalStrategy = passportLocal.Strategy;
+const JwtStrategy = passportJwt.Strategy
+const ExtractJwt = passportJwt.ExtractJwt; 
+const jwtOptions ={} 
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = process.env.SECRETO; 
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +48,7 @@ app.use(ProductosRouter);
 app.use(CarritoRouter);
 app.use(EmailRouter);
 app.use(OrdenesRouter);
-passport.use(
+passport.use('login',
   new LocalStrategy(
     {
       usernameField: "email",
@@ -53,12 +60,12 @@ passport.use(
       if (usuario) {
         bcrypt.compare(password, usuario.password, function (error, isMatch) {
           if (error) {
-            return done(null, false);
+            return done(null, false, {mensaje: "le erraste en la contraseña"});
           }
-          return done(null, usuario);
+          return done(null, usuario, {mensaje: "logueado correctamente"});
         });
       } else {
-        return done(null, false);
+        return done(null, false, {mensaje: 'no pegaste ni el usuario'});
       }
       return false;
     }
@@ -74,18 +81,37 @@ passport.deserializeUser((id, done) => {
   done(null, user);
 });
 
-app.post("/api/login", passport.authenticate("local"), (req, res) => {
-  const userSended = {
-    id: req?.user._id,
-    nombre: req?.user.nombre,
-    avatar: req?.user.avatar,
-    edad: req?.user.edad,
-    direccion: req?.user.direccion,
-    email: req?.user.email,
-    isAdmin: req?.user.isAdmin,
-  };
-  res.send({ user: userSended });
-});
+
+app.post("/api/login",(req, res, next)=> {
+  passport.authenticate("login", (err, user, info) => {
+    try {
+      if( err || !user) {
+        const error = new Error('new Error')
+        return next(error)
+      }
+    
+    req.login(user, {session: false}, async (err)=> {
+      if(err) return next(err)
+      const token = jwt.sign({user: body}, "secreto",  {expiresIn: '48h'})
+      const body = {
+        id: user._id,
+        nombre: user.nombre,
+        avatar: user.avatar,
+        edad: user.edad,
+        direccion: user.direccion,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: token
+      }
+      res.json({body});
+    })
+  } catch(e) {
+    return next(e)
+  }
+  }) (req, res, next)
+} )
+  
+
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -117,7 +143,7 @@ io.on("connection", async (socket) => {
       await new comentariosNormalizer().cargarTodosLosComentarios();
     io.sockets.emit("comentarios", listaComentarios);
   });
-  const chat = await new chatNormalizer().cargarTodosLoschats();
+  const chat = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
   io.sockets.emit("chatMessage", chat);
 
   socket.on("recibir", async (data) => {
@@ -126,7 +152,7 @@ io.on("connection", async (socket) => {
       nombre: data.body.nombre,
       mensaje: data.body.mensaje,
     });
-    const chatNuevos = await new chatNormalizer().cargarTodosLoschats();
+    const chatNuevos = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
     io.sockets.emit("chatMessage", chatNuevos);
   });
 
@@ -134,9 +160,9 @@ io.on("connection", async (socket) => {
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
+app.listen(4000, () => {
   console.log("Se esta escuchando", PORT);
 });
-server.listen(process.env.WEBSOCKET_PORT, () => {
+server.listen(4001, () => {
   console.log(`server de websocket escuchando en el ${4001}`);
 });

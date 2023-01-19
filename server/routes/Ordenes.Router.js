@@ -1,15 +1,16 @@
 import express from "express";
 import OrdenesNormalizer from "../negocio/ordenesNormalizer.js";
 import transporter from "../config/nodeMailer.js";
+import auth from '../middlewares/auth.js'
 
 const router = express.Router();
 
-router.get("/api/ordenes/:id", async (req, res) => {
+router.get("/api/ordenes/:id",  async (req, res) => {
      const ordenes = await new OrdenesNormalizer().getAll(req.params.id);
     if (!ordenes?.error) {
         res.json({
         ok: true,
-        mensaje: "El Post se edito correctamente",
+        mensaje: "la orden se genero correctamente",
         ordenes,
         });
     } else {
@@ -20,7 +21,7 @@ router.get("/api/ordenes/:id", async (req, res) => {
         });
     } 
 });
-router.post("/api/ordenes", async (req, res) => {
+router.post("/api/ordenes", auth,  async (req, res) => {
     const ordenes = await new OrdenesNormalizer().guardarOrden(req.body);
    
   if (!ordenes?.error) {
@@ -34,7 +35,7 @@ router.post("/api/ordenes", async (req, res) => {
     const mail = await transporter.sendMail(data);
     res.json({
       ok: true,
-      mensaje: "El Post se edito correctamente",
+      mensaje: "la Orden se edito correctamente",
       id: ordenes,
     });
   } else {

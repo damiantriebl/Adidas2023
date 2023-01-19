@@ -6,11 +6,16 @@ class productosDaoMongo {
   }
   async save(producto) {
     try {
-      let productoObj = await this.db.create(producto);
+      let productoUpload = producto;
+      let getIds = await this.db.find({}).limit(1).
+      sort('-id');
+      console.log('dtcon', getIds)
+      productoUpload.id = getIds[0].id + 1
+      let productoObj = await this.db.create(productoUpload);
       productoObj.save();
       return productoObj;
     } catch (error) {
-      console.warm("hay un error ", error);
+      console.log("hay un error ", error);
       return { error: error.message };
     }
   }
@@ -47,7 +52,8 @@ class productosDaoMongo {
                     {
                     "producto": obj.producto,
                     "precio": obj.precio,
-                    "thumbnail": obj.thumbnail
+                    "thumbnail": obj.thumbnail,
+                    "tipo": obj.tipo
                 });
                 return producto
             }else{
