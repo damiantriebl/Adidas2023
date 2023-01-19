@@ -17,21 +17,21 @@ import http from "http";
 import comentariosNormalizer from "./negocio/comentariosNormalizer.js";
 import { OrdenesRouter } from "./routes/Ordenes.Router.js";
 import chatNormalizer from "./negocio/chatNormalizer.js";
-import passportJwt from 'passport-jwt'
-import jwt from 'jsonwebtoken'
+import passportJwt from "passport-jwt";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 const LocalStrategy = passportLocal.Strategy;
-const ExtractJwt = passportJwt.ExtractJwt; 
-const jwtOptions ={} 
+const ExtractJwt = passportJwt.ExtractJwt;
+const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = process.env.SECRETO; 
+jwtOptions.secretOrKey = process.env.SECRETO;
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin:  "*", credentials: true }));
+app.use(cors({ origin: "*", credentials: true }));
 app.use(
   session({
     secret: process.env.SECRETO,
@@ -47,7 +47,8 @@ app.use(ProductosRouter);
 app.use(CarritoRouter);
 app.use(EmailRouter);
 app.use(OrdenesRouter);
-passport.use('login',
+passport.use(
+  "login",
   new LocalStrategy(
     {
       usernameField: "email",
@@ -59,12 +60,14 @@ passport.use('login',
       if (usuario) {
         bcrypt.compare(password, usuario.password, function (error, isMatch) {
           if (error) {
-            return done(null, false, {mensaje: "le erraste en la contraseña"});
+            return done(null, false, {
+              mensaje: "le erraste en la contraseña",
+            });
           }
-          return done(null, usuario, {mensaje: "logueado correctamente"});
+          return done(null, usuario, { mensaje: "logueado correctamente" });
         });
       } else {
-        return done(null, false, {mensaje: 'no pegaste ni el usuario'});
+        return done(null, false, { mensaje: "no pegaste ni el usuario" });
       }
       return false;
     }
@@ -80,37 +83,36 @@ passport.deserializeUser((id, done) => {
   done(null, user);
 });
 
-
-app.post("/api/login",(req, res, next)=> {
+app.post("/api/login", (req, res, next) => {
   passport.authenticate("login", (err, user, info) => {
     try {
-      if( err || !user) {
-        const error = new Error('new Error')
-        return next(error)
+      if (err || !user) {
+        const error = new Error("new Error");
+        return next(error);
       }
-    
-    req.login(user, {session: false}, async (err)=> {
-      if(err) return next(err)
-      const token = jwt.sign({user: body}, "secreto",  {expiresIn: process.env.EXPIRACION})
-      const body = {
-        id: user._id,
-        nombre: user.nombre,
-        avatar: user.avatar,
-        edad: user.edad,
-        direccion: user.direccion,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        token: token
-      }
-      res.json({body});
-    })
-  } catch(e) {
-    return next(e)
-  }
-  }) (req, res, next)
-} )
-  
 
+      req.login(user, { session: false }, async (err) => {
+        if (err) return next(err);
+        const token = jwt.sign({ user: body }, "secreto", {
+          expiresIn: process.env.EXPIRACION,
+        });
+        const body = {
+          id: user._id,
+          nombre: user.nombre,
+          avatar: user.avatar,
+          edad: user.edad,
+          direccion: user.direccion,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: token,
+        };
+        res.json({ body });
+      });
+    } catch (e) {
+      return next(e);
+    }
+  })(req, res, next);
+});
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -142,7 +144,9 @@ io.on("connection", async (socket) => {
       await new comentariosNormalizer().cargarTodosLosComentarios();
     io.sockets.emit("comentarios", listaComentarios);
   });
-  const chat = await new chatNormalizer().cargarChatPorEmail(process.env.MAIL_USER);
+  const chat = await new chatNormalizer().cargarChatPorEmail(
+    process.env.MAIL_USER
+  );
   io.sockets.emit("chatMessage", chat);
 
   socket.on("recibir", async (data) => {
@@ -151,10 +155,11 @@ io.on("connection", async (socket) => {
       nombre: data.body.nombre,
       mensaje: data.body.mensaje,
     });
-    const chatNuevos = await new chatNormalizer().cargarChatPorEmail(process.env.MAIL_USER);
+    const chatNuevos = await new chatNormalizer().cargarChatPorEmail(
+      process.env.MAIL_USER
+    );
     io.sockets.emit("chatMessage", chatNuevos);
   });
-
 });
 
 const PORT = process.env.PORT || 4000;
@@ -163,5 +168,7 @@ app.listen(PORT, () => {
   console.log("Se esta escuchando", PORT);
 });
 server.listen(process.env.WEBSOCKET_PORT, () => {
-  console.log(`server de websocket escuchando en el ${process.env.WEBSOCKET_PORT}`);
+  console.log(
+    `server de websocket escuchando en el ${process.env.WEBSOCKET_PORT}`
+  );
 });
