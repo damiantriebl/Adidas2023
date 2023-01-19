@@ -9,7 +9,8 @@ usando la rama **proyectofinal** anda el sistema de comentarios, y el sistema de
 Se levanta con vite, un simple **npm run dev** lo puede levantar sin problemas.
 # server
 
-Como se puede ver estan todos los endpoint necesarios que se pidieron en el proyecto final. 
+Como se puede ver estan todos los endpoint necesarios que se pidieron en el proyecto final.  los que tienen post, put, delete tienen el middelware de auth.
+
 ## Productos:
 #### "/api/productos" => Get. Da la lista de todos los productos 
 #### "/api/productos/:parametro" => Get. Este revisa por expresion regular si es un **id** o un **tipo** y te devuelve en relacion a eso 
@@ -31,5 +32,6 @@ Como se puede ver estan todos los endpoint necesarios que se pidieron en el proy
 #### '/api/logout' => Get.  Deloguea el usuario
 #### '/api/signup' => Post. Da de alta un usuario
 #### '/api/login' => Post. logea al usuario
+#### '/api/user' => Get. Detalle de la coockie de sesion
 ## Email
 #### '/api/email' => Get. testeo de el mail
