@@ -22,7 +22,6 @@ import jwt from 'jsonwebtoken'
 dotenv.config();
 
 const LocalStrategy = passportLocal.Strategy;
-const JwtStrategy = passportJwt.Strategy
 const ExtractJwt = passportJwt.ExtractJwt; 
 const jwtOptions ={} 
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -35,7 +34,7 @@ app.use(cookieParser());
 app.use(cors({ origin:  "*", credentials: true }));
 app.use(
   session({
-    secret: "secretcode",
+    secret: process.env.SECRETO,
     resave: true,
     saveUninitialized: true,
   })
@@ -92,7 +91,7 @@ app.post("/api/login",(req, res, next)=> {
     
     req.login(user, {session: false}, async (err)=> {
       if(err) return next(err)
-      const token = jwt.sign({user: body}, "secreto",  {expiresIn: '48h'})
+      const token = jwt.sign({user: body}, "secreto",  {expiresIn: process.env.EXPIRACION})
       const body = {
         id: user._id,
         nombre: user.nombre,
@@ -117,7 +116,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", ""],
   },
 });
 
@@ -143,7 +142,7 @@ io.on("connection", async (socket) => {
       await new comentariosNormalizer().cargarTodosLosComentarios();
     io.sockets.emit("comentarios", listaComentarios);
   });
-  const chat = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
+  const chat = await new chatNormalizer().cargarChatPorEmail(process.env.MAIL_USER);
   io.sockets.emit("chatMessage", chat);
 
   socket.on("recibir", async (data) => {
@@ -152,7 +151,7 @@ io.on("connection", async (socket) => {
       nombre: data.body.nombre,
       mensaje: data.body.mensaje,
     });
-    const chatNuevos = await new chatNormalizer().cargarChatPorEmail("damiantriebl@gmail.com");
+    const chatNuevos = await new chatNormalizer().cargarChatPorEmail(process.env.MAIL_USER);
     io.sockets.emit("chatMessage", chatNuevos);
   });
 
@@ -160,9 +159,9 @@ io.on("connection", async (socket) => {
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
   console.log("Se esta escuchando", PORT);
 });
-server.listen(4001, () => {
-  console.log(`server de websocket escuchando en el ${4001}`);
+server.listen(process.env.WEBSOCKET_PORT, () => {
+  console.log(`server de websocket escuchando en el ${process.env.WEBSOCKET_PORT}`);
 });
