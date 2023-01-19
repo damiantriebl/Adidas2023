@@ -2,6 +2,7 @@ import Comments from "./Layout/Comments";
 import Products from "./Layout/Products";
 import Home from './Layout/Home'
 import Nav from "./Layout/Nav";
+import VariablesEntorno from "./Layout/Variables";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Cart from "./Layout/Cart";
 import RutaProtegida from "./RutaProtegida";
@@ -22,6 +23,8 @@ function App() {
           <Route path="/" element={<RutaProtegida user={user}><Products /></RutaProtegida>} />
           <Route path="/login" element={<Home />} />
           <Route path="/ordenes" element={<RutaProtegida user={user}><Cart /></RutaProtegida>} />
+          <Route path="/variables" element={<RutaProtegida user={user}><VariablesEntorno /></RutaProtegida>} />
+
         </Routes>
       </div>
       <Comments home className={home && "hidden "} />

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProductos, addCart, initCart } from '../redux/carroSlice'
 import { setCredentials } from "../redux/AdministradorSlice";
 import ChatIcon from "../assets/chatIcon";
-import { Button, Tooltip } from 'flowbite-react'
+import { Button, Tooltip,Spinner } from 'flowbite-react'
 import ChatTooltip from "./chatTooltip";
 import useSocket from "../hooks/useSockect";
 
@@ -68,7 +68,9 @@ const productos = (props = []) => {
     }
     const id = useId();
     if (productos.length === 0) {
-        return <div>Cargando...</div>
+        return <div className="text-center">
+        <Spinner aria-label="Center-aligned spinner example" />
+      </div>
     }
     return (
         <div className="p-5 flex flex-wrap justify-around	">

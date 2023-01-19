@@ -24,8 +24,8 @@ const Login = ({setIsLogin}) => {
         body: { email: parametro.email, password: parametro.password },
         onSuccess: (usr) => {
             if (usr) {
-                setUser(usr.user)
-                dispatch(setCredentials(usr))
+                setUser(usr.body)
+                dispatch(setCredentials(usr.body))
                 navigate("/");
 
             } else {

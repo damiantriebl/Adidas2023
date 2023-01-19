@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { deleteCart } from "../redux/carroSlice";
 import useRequest from '../hooks/useRequest';
 import { useNavigate } from "react-router-dom";
+import {Spinner} from 'flowbite-react'
 
 const DrawnerCarro = () => {
   const carrito = useSelector((state) => state.carro.carrito);
@@ -13,7 +14,7 @@ const DrawnerCarro = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { doSend, errors } = useRequest({
-    url: "/api/ordenes",
+    url: `/api/ordenes/token=${usuario.token}`,
     method: "post",
     body: { orden: carrito, usuario  },
     onSuccess: (usr) => {        
@@ -24,7 +25,9 @@ const DrawnerCarro = () => {
     doSend();
   }
 
-  if (!carrito) { return <h1>Cargando...</h1> }
+  if (!carrito) { return  <div className="text-center">
+  <Spinner aria-label="Center-aligned spinner example" />
+</div> }
   return (
     <div id="drawer-carro" className="flex flex-col absolute z-40 h-full right-0 p-4 mt-40 overflow-y-auto bg-white w-96" tabIndex="-1" aria-labelledby="drawer-right-label">
       <h5 id="drawer-label" className="inline-flex items-center mb-4 text-lg mb-12 font-semibold text-gray-500 dark:text-gray-400">
