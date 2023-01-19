@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toggleAdministrador } from "../redux/AdministradorSlice";
 import axios from 'axios';
 import { useSelector, useDispatch } from "react-redux";
-
+import {setError} from '../redux/ErrorSlice'
 const SingUp = ({ setIsLogin }) => {
     const [parametro, setparametro] = useState({ email: '',RepeatPassword: '', password: '', nombre: '', edad: 0, direccion: '', telefono:0 });
     const [files, setFiles] = useState([]);
@@ -13,9 +13,9 @@ const SingUp = ({ setIsLogin }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const onSubmit = async (e) => {
-        if(RepeatPassword === password){
-            const formData = new FormData();
-            formData.append('file', files)
+        const formData = new FormData();
+        if(RepeatPassword.value === password.value){
+//            formData.append('file', files)
             formData.append("email", parametro.email)
             formData.append("password", parametro.password)
             formData.append("nombre", parametro.nombre)
@@ -29,7 +29,7 @@ const SingUp = ({ setIsLogin }) => {
 
 
         try {
-            const res = await axios.post('http://localhost:4000/api/signup', formData);
+            const res = await axios.post('https://backend-production-e99b.up.railway.app/api/signup', formData);
             setValido(true)
         } catch (err) {
             if (err.response?.status === 500) {

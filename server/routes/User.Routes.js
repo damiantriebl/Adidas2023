@@ -2,14 +2,12 @@ import express from 'express';
 import userNormalizer from '../negocio/userNormalizer.js';
 import multer from 'multer';
 import storage from '../config/multerConfig.js';
-import jwt from 'jsonwebtoken'
 import transporter from "../config/nodeMailer.js";
 import passport from 'passport'
 import auth from "../middlewares/auth.js"
 
 const router = express.Router();
 
-const PRIVATE_KEY = 'SECRETO'
 const upload = multer({ storage })
 
 const generarToken = (user) => {
@@ -27,7 +25,7 @@ router.get('/api/logout',  async (req, res, next) => {
 })
 
 router.post('/api/signup',upload.single("file"), async (req, res, next) => {
-    const data = {...req.body, avatar: req.file.filename}
+    const data = {...req.body}
     const res2 = await new userNormalizer().guardarUsuario(data);  
     const respuesta = res2.data;
     const html= `<ul>

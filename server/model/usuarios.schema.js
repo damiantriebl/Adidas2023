@@ -7,7 +7,7 @@ const UsuarioSchema = new Mongoose.Schema({
     nombre: String,
     direccion: String,
     telefono: String,
-    avatar: String,
+  //  avatar: String,
     isAdmin: Boolean,
     dateOfJoining: {
         type: Date,
