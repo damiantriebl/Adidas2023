@@ -22,7 +22,7 @@ router.get("/api/productos/:parametro", async (req, res) => {
   res.json(productos);
 });
 
-router.post("/api/productos", auth,  async (req, res) => {
+router.post("/api/productos",  async (req, res) => {
   const respuesta = await new productosNormalizer().guardarProducto(req.body);
   res.json(respuesta);
 });
