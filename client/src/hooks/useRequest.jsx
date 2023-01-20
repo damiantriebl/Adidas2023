@@ -18,7 +18,7 @@ const useRequest = ({ url, method, body, onSuccess, headers = "" }) => {
   
   const doSend = async (props = {}) => {
     setErrors(null);
-    const formatUrl = `http://localhost:4000${url}`;
+    const formatUrl = `https://back-production-1bdc.up.railway.app${url}`;
     try {
       const response = await axios[method](formatUrl, { ...props, ...body, ...config });
       if (response) {
