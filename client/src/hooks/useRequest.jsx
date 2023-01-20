@@ -13,6 +13,8 @@ const useRequest = ({ url, method, body, onSuccess, headers = "" }) => {
   let config = {
       headers: {
         authorization: user?.token ?? '',
+        "Access-Control-Allow-Origin" : '*',
+        "Access-Control-Allow-Methods":'GET,PUT,POST,DELETE,PATCH,OPTIONS',
       },
     };
   
