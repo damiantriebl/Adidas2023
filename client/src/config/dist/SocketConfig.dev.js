@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _socket = require("socket.io-client");
 
-var URL = "http://0.0.0.0/:4001"; // backend port is 3010
+var URL = "http://localhost:4001"; // backend port is 3010
 
 var socket = (0, _socket.io)(URL, {
   autoConnect: true,

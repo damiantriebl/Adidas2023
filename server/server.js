@@ -93,10 +93,7 @@ app.post("/api/login", (req, res, next) => {
 
       req.login(user, { session: false }, async (err) => {
         if (err) return next(err);
-        const token = jwt.sign({ user: body }, "secreto", {
-          expiresIn: process.env.EXPIRACION,
-        });
-        const body = {
+        let body = {
           id: user._id,
           nombre: user.nombre,
           avatar: user.avatar,
@@ -104,8 +101,11 @@ app.post("/api/login", (req, res, next) => {
           direccion: user.direccion,
           email: user.email,
           isAdmin: user.isAdmin,
-          token: token,
         };
+        const token = jwt.sign({ user: body }, process.env.SECRETO, {
+          expiresIn: process.env.EXPIRACION,
+        });
+        body.token = token;
         res.json({ body });
       });
     } catch (e) {

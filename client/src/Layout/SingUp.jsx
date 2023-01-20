@@ -29,7 +29,7 @@ const SingUp = ({ setIsLogin }) => {
 
 
         try {
-            const res = await axios.post('https://backend-production-e99b.up.railway.app/api/signup', formData);
+            const res = await axios.post('http://localhost:4000/api/signup', formData);
             setValido(true)
         } catch (err) {
             if (err.response?.status === 500) {

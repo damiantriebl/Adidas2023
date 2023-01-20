@@ -56,7 +56,9 @@ router.get('/api/variables', auth,  (req, res) => {
        MAIL_USER:process.env.MAIL_USER,
        MAIL_HOST:process.env.MAIL_HOST,
        MAIL_PORT:process.env.MAIL_PORT,
-       PRIVATE_KEY:process.env.PRIVATE_KEY       
+       PRIVATE_KEY:process.env.PRIVATE_KEY,       
+       EXPIRACION:process.env.EXPIRACION,
+       SECRETO:process.env.SECRETO
      });
    }else {
     res.send({
